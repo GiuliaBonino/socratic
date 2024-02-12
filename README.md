@@ -10,3 +10,10 @@ Scripts used:
 - copy_dataset.py <dataset_name> <output_folder> -> Copies a dataset (MathQA) and splits it into folders formatting the fields
 - process_dataset.sh <> -> Uses Llama.cpp to generate teacher-student conversations
 - postprocess_dataset.py <dataset_name> <output_file> -> Appends all file into a csv dataset splitting the conversation into a number (NUM_SPLITS) of splits
+
+## Model Training Pipeline
+
+The pipline realized the Direct Policy Optimization technique for fine-tuning LLM's directly through an annotated dataset
+
+- DPO_Trainer.py -> Trains specified unquantized model using DPO
+- DPO_Mistral.ipynb -> Trains a quantized model in a notebook 
