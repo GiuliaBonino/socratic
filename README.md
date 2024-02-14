@@ -11,3 +11,10 @@ Scripts used:
 - process_dataset.sh <> -> Uses Llama.cpp to generate teacher-student conversations
 - postprocess_dataset.py <dataset_name> <output_file> -> Appends all file into a csv dataset splitting the conversation into a number (NUM_SPLITS) of splits
 - add_bad_answers.pynb -> Use to generate the bad answers for the RLHF process
+
+## Model Training Pipeline
+
+The pipline realized the Direct Policy Optimization technique for fine-tuning LLM's directly through an annotated dataset
+
+- DPO_Trainer.py -> Trains specified unquantized model using DPO
+- DPO_Mistral.ipynb -> Trains a quantized model in a notebook 
