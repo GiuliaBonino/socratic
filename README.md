@@ -7,10 +7,12 @@ Project to train Llama2 using RLHF for socratic learning
 The dataset has been generated using a combination of QA and Chain-of-Thought datasets using Llama.cpp to generate teacher-student conversations
 
 Scripts used:
-- copy_dataset.py <dataset_name> <output_folder> -> Copies a dataset (MathQA) and splits it into folders formatting the fields
-- process_dataset.sh <> -> Uses Llama.cpp to generate teacher-student conversations
-- postprocess_dataset.py <dataset_name> <output_file> -> Appends all file into a csv dataset splitting the conversation into a number (NUM_SPLITS) of splits
-- add_bad_answers.pynb -> Use to generate the bad answers for the RLHF process
+- copy_dataset.py <dataset_name> <output_folder> -> Copies a dataset (MathQA) and splits it into files (file1, file2, ...) inside output_folder, formatting the fields as required (the source code is adapted for the MathQA dataset and must be changed to correspond and format the required fields).
+- process_dataset.sh <> -> Uses Llama.cpp to generate teacher-student conversations. All the model and folder paths are declared at the top and can be change as required.
+- postprocess_dataset.py <conversation_folder> <output_file> -> Appends all files in conversation_folder into a csv dataset. It generates (NUM_SPLITS) rows from each conversation adding the beginning of the conversation into the "Prompt" column and the teacher's response in the "Good answer" column.
+- add_bad_answers.pynb -> Python notebook used to generate the bad answers for the RLHF process using gpt2.
+  
+![dataset pipeline](https://github.com/elalber2000/Socratic_RLHF/blob/main/dataset_process.PNG)
 
 ## Model Training Pipeline
 
