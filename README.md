@@ -22,4 +22,5 @@ The pipline realized the Direct Policy Optimization technique for fine-tuning LL
 - DPO_Trainer_Unquant.py -> Trains specified unquantized model using DPO [> Python 3.10, HG Dataset]
 - DPO_Trainer_Soc.py -> Trains specified quantized model using DPO [Python 3.9 only, Socratic Dataset (only good answers)]
 - DPO_Inference.py -> Used for inference, comparing with the saved model and loaded model
-- DPO_Mistral.ipynb -> Trains a quantized model in a notebook 
+- MistralColab.ipynb -> Trains a quantized model in a notebook
+- final_model.zip -> Trained model on 5000 examples, for 30 steps
