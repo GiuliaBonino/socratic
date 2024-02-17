@@ -1,22 +1,21 @@
 #--------- IMPORTS --------#
 import torch
 from datasets import Dataset, load_dataset
-#from peft import AutoPeftModelForCausalLM, LoraConfig, get_peft_model, prepare_model_for_kbit_training
+from peft import AutoPeftModelForCausalLM, LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from transformers import AutoTokenizer, TrainingArguments, AutoModelForCausalLM, GPTQConfig
 from trl import DPOTrainer
 import time
 import huggingface_hub as hg
 
-hg.login(token="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")
+hg.login(token="INSERT WRITE TOKEN")
 
 #------ PARAMETERS --------#
-HG_MODEL_NAME = "mistralai/Mistral-7B-v0.1"
+#HG_MODEL_NAME = "mistralai/Mistral-7B-v0.1"
 HG_MODEL_NAME = "TheBloke/OpenHermes-2-Mistral-7B-GPTQ"
-HG_MODEL_NAME = "microsoft/phi-2"
+#HG_MODEL_NAME = "openai-community/gpt2"
 HG_TOKENIZER_NAME = HG_MODEL_NAME
 HG_DATASET_NAME = "HuggingFaceH4/ultrafeedback_binarized"
-TOKEN = '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'
-
+#TOKEN="INSERT READ TOKEN"
 
 #------ DATASET AND PREPROCESSING ---------#
 def hg_data(hg_dataset_name, split, token):
@@ -54,9 +53,9 @@ train_data, val_data = hg_data(HG_DATASET_NAME, "test_prefs", TOKEN)
 
 
 #------ MODEL AND TOKENIZER ------#
-model = AutoModelForCausalLM.from_pretrained(HG_MODEL_NAME, torch_dtype=torch.float16, low_cpu_mem_usage=True)
+model = AutoModelForCausalLM.from_pretrained(HG_MODEL_NAME, torch_dtype=torch.float16, low_cpu_mem_usage=True, quantization_config=GPTQConfig(bits=4, use_exllama=False))
 
-model_ref = AutoModelForCausalLM.from_pretrained(HG_MODEL_NAME, torch_dtype=torch.float16, low_cpu_mem_usage=True)
+model_ref = AutoModelForCausalLM.from_pretrained(HG_MODEL_NAME, torch_dtype=torch.float16, low_cpu_mem_usage=True, quantization_config=GPTQConfig(bits=4, use_exllama=False))
 
 tokenizer = AutoTokenizer.from_pretrained(HG_TOKENIZER_NAME)
 
@@ -64,21 +63,21 @@ if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
 #------- PEFT CONFIG ----------#
-#peft_config = LoraConfig(
-#        r=8,
-#        lora_alpha=8,
-#        lora_dropout=0.1,
-#        target_modules=["q_proj", "v_proj"],
-#        bias="none",
-#        task_type="CAUSAL_LM",
-#    )
-#peft_config.inference_mode = False
+peft_config = LoraConfig(
+        r=8,
+        lora_alpha=8,
+        lora_dropout=0.1,
+        target_modules=["q_proj", "v_proj"],
+        bias="none",
+        task_type="CAUSAL_LM",
+    )
+peft_config.inference_mode = False
 
-#model = prepare_model_for_kbit_training(model)
-#model.config.use_cache=False
-#model.gradient_checkpointing_enable()
-#model.config.pretraining_tp=1
-#model = get_peft_model(model, peft_config)
+model = prepare_model_for_kbit_training(model)
+model.config.use_cache=False
+model.gradient_checkpointing_enable()
+model.config.pretraining_tp=1
+model = get_peft_model(model, peft_config)
 
 #--------- TRAINING -----------#
 training_args = TrainingArguments(
@@ -111,11 +110,4 @@ dpo_trainer = DPOTrainer(
     )
 
 dpo_trainer.train()
-
-
-
-
-
-
-
-print("Hello")
+dpo_trainer.save_model("/model")
