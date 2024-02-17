@@ -16,5 +16,8 @@ Scripts used:
 
 The pipline realized the Direct Policy Optimization technique for fine-tuning LLM's directly through an annotated dataset
 
-- DPO_Trainer.py -> Trains specified unquantized model using DPO
+- DPO_Trainer_Quant.py -> Trains specified quantized model using DPO [Python 3.9 only, HG Dataset]
+- DPO_Trainer_Unquant.py -> Trains specified unquantized model using DPO [> Python 3.10, HG Dataset]
+- DPO_Trainer_Soc.py -> Trains specified quantized model using DPO [Python 3.9 only, Socratic Dataset (only good answers)]
+- DPO_Inference.py -> Used for inference, comparing with the saved model and loaded model
 - DPO_Mistral.ipynb -> Trains a quantized model in a notebook 
