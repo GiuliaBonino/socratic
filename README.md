@@ -24,3 +24,7 @@ The pipline realized the Direct Policy Optimization technique for fine-tuning LL
 - DPO_Inference.py -> Used for inference, comparing with the saved model and loaded model
 - MistralColab.ipynb -> Trains a quantized model in a notebook
 - final_model.zip -> Trained model on 5000 examples, for 30 steps
+
+## How to run
+Data generation:
+ - run script copy_dataset: !python copy_dataset.py math_qa path_to_output_folder
